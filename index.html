@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Borderline Visualization — Architectural Visualization Studio</title>
+<meta name="description" content="Architectural visualization studio from Indonesia. Still images, 360° virtual tours and animation for architects and developers.">
+<link rel="canonical" href="https://borderlinevisualization.com/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#F3F1EE">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Borderline Visualization">
+<meta property="og:title" content="Borderline Visualization — Architectural Visualization Studio">
+<meta property="og:description" content="Architectural visualization studio from Indonesia. Still images, 360° virtual tours and animation for architects and developers.">
+<meta property="og:url" content="https://borderlinevisualization.com/">
+<meta property="og:image" content="https://borderlinevisualization.com/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Borderline Visualization", "url": "https://borderlinevisualization.com/", "logo": "https://borderlinevisualization.com/icon-512.png", "image": "https://borderlinevisualization.com/img/og-image.jpg", "description": "Architectural visualization studio from Indonesia. Still images, 360° virtual tours and animation for architects and developers.", "address": {"@type": "PostalAddress", "addressLocality": "Bekasi", "addressRegion": "West Java", "addressCountry": "ID"}, "areaServed": "Worldwide", "sameAs": ["https://www.instagram.com/borderline.viz/", "https://www.behance.net/borderline"]}</script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500&display=swap">
+<style>
+/* Layout: one continuous line (the "border line") runs through a horizontal track at 60% height. Renders stand on it or hang from it, text is set left-aligned along it, the passed part of the line darkens, and it ends in a dot at the invitation. Warm paper, warm stone ground, warm charcoal. Stacks vertically under 900px with the line turned vertical. */
+:root {
+  --paper: #F3F1EE;
+  --stone: #DCD5CC;
+  --ink: #1A1816;
+  --muted: #6E6A64;
+  --faint: #CFC8BF;
+  --char: #2F2C29;
+  --on-char: #F3F1EE;
+  --on-char-muted: rgba(243,241,238,.62);
+  --on-char-faint: rgba(243,241,238,.22);
+  --sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --top: 72px;
+  --bottom: 56px;
+  --ly: 60%;      /* the line */
+  --stand: 40%;   /* bottom offset for things standing on the line */
+  --gl: max(16px, env(safe-area-inset-left, 0px));
+  --gr: max(16px, env(safe-area-inset-right, 0px));
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+[hidden] { display: none !important; }
+a { color: inherit; }
+:focus-visible { outline: 1.5px solid currentColor; outline-offset: 4px; }
+p, h1, h2, figure { margin: 0; }
+
+.say { font-weight: 200; font-size: clamp(24px, 2.2vw, 38px); line-height: 1.22; letter-spacing: -0.015em; text-wrap: balance; }
+.say strong { font-weight: 500; }
+.label { font-size: 13px; font-weight: 400; color: var(--muted); }
+.tlink { font-weight: 300; font-size: 16px; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; white-space: nowrap; }
+.tlink:hover { border-bottom-width: 2px; }
+.note { font-size: 12px; font-weight: 300; color: var(--muted); }
+
+/* Frame */
+.bar { position: fixed; z-index: 30; left: 0; right: 0; background: var(--paper); }
+.bar .in { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-left: max(28px, var(--gl)); padding-right: max(28px, var(--gr)); }
+.topbar { top: 0; padding-top: env(safe-area-inset-top, 0px); }
+.topbar .in { height: var(--top); }
+.bottombar { bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.bottombar .in { height: var(--bottom); }
+.brand { width: 150px; flex: none; }
+.brand img { width: 100%; height: auto; }
+.topnav { display: flex; align-items: center; gap: clamp(16px, 2.2vw, 32px); }
+.topnav a { font-weight: 300; font-size: 14px; text-decoration: none; }
+.topnav a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.topnav .tlink { font-size: 15px; font-weight: 400; }
+/* Narrow phones: keep the longer CTA on one line */
+@media (max-width: 360px) { .topbar .brand { width: 104px; } .topbar .tlink { font-size: 14px; } }
+
+.where { font-size: 13px; font-weight: 300; color: var(--muted); }
+.cue { display: inline-flex; align-items: center; gap: 12px; font-weight: 300; font-size: 15px; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; transition: opacity .3s; }
+.cue svg { width: 22px; height: 10px; }
+
+/* Horizontal track */
+.hs { position: relative; }
+.hs-sticky { position: sticky; top: calc(var(--top) + env(safe-area-inset-top, 0px)); height: calc(100vh - var(--top) - var(--bottom)); overflow: hidden; overflow: clip; }
+.track { display: flex; height: 100%; position: relative; will-change: transform; }
+.panel { flex: none; height: 100%; position: relative; }
+.pin { position: absolute; top: 6px; left: 6vw; z-index: 2; }
+
+/* The line */
+.seg { position: absolute; top: var(--ly); height: 1px; background: var(--faint); z-index: 3; pointer-events: none; }
+.seg i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--ink); }
+.seg.light { background: var(--on-char-faint); }
+.seg.light i { background: var(--on-char); }
+.vline { display: none; }
+
+/* 1. Opening */
+.p-open { width: calc(100vw - 56px); margin-left: 28px; overflow: hidden; }
+.p-open > img, .p-open > video { width: 100%; height: 100%; object-fit: cover; }
+.p-open > video { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
+.p-open > video.on { opacity: 1; }
+.p-open::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, rgba(14,12,10,.38) 52%, rgba(14,12,10,.5) 100%); pointer-events: none; }
+.p-open .cap { position: absolute; z-index: 2; left: clamp(24px, 3vw, 48px); bottom: calc(var(--stand) + 20px); color: #fff; display: grid; gap: 8px; }
+.p-open .cap .say { font-size: clamp(30px, 3.2vw, 52px); }
+.p-open .under { position: absolute; z-index: 2; top: var(--ly); left: clamp(24px, 3vw, 48px); right: 0; height: 1px; background: rgba(255,255,255,.75); }
+.p-open .sub { position: absolute; z-index: 2; top: calc(var(--ly) + 16px); left: clamp(24px, 3vw, 48px); color: rgba(255,255,255,.82); font-size: 13px; font-weight: 300; }
+
+/* 2. About */
+.p-about { width: 118vw; }
+.p-about .txt { position: absolute; left: 6vw; bottom: calc(var(--stand) + 28px); width: min(30ch, 30vw); }
+.clay { position: absolute; left: 0; bottom: var(--stand); height: 54%; aspect-ratio: 4 / 5; }
+.clay img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.clay img { object-position: 56% 50%; }
+.clay figcaption { position: absolute; right: 0; top: calc(100% + 14px); }
+.p-about .hang { position: absolute; top: var(--ly); width: 22vw; aspect-ratio: 3 / 2; }
+.p-about .hang img, .p-approach figure img, .standing img, .film img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 3. Approach: stone ground under the line */
+.p-approach { width: 84vw; }
+.ground { position: absolute; left: 0; right: 0; top: var(--ly); bottom: 0; background: var(--stone); }
+.p-approach figure { position: absolute; left: 6vw; bottom: var(--stand); height: 56%; aspect-ratio: 5 / 4; }
+.p-approach .txt { position: absolute; left: 6vw; top: calc(var(--ly) + 32px); display: flex; align-items: baseline; gap: 4vw; flex-wrap: wrap; width: 70vw; }
+.p-approach .say { max-width: 34ch; }
+.p-approach .txt { flex-direction: column; align-items: flex-start; gap: 16px; }
+.support { font-size: clamp(15px, 1.05vw, 18px); font-weight: 300; line-height: 1.55; color: var(--muted); max-width: 40ch; margin: 0; text-wrap: pretty; }
+.support strong { font-weight: 500; color: var(--ink); }
+.p-about .txt .support { margin-top: 18px; }
+.p-about .say .ln { display: block; white-space: nowrap; }
+.p-about .txt { width: min(36vw, 600px); }
+.p-about .txt .support, .p-approach .support { max-width: 62ch; text-wrap: balance; }
+.p-about .meaning { max-width: 48ch; }
+@media (max-width: 900px) { .p-about .say .ln { white-space: normal; } }
+
+/* 4. Services: three heights on the line, like a skyline */
+.p-services { width: 96vw; }
+.skyline { position: absolute; left: 6vw; bottom: var(--stand); display: flex; align-items: flex-end; gap: 3vw; }
+.standing { display: block; }
+.s1 { width: 15vw; height: calc((100vh - 128px) * .42); }
+.s2 { width: 19vw; height: calc((100vh - 128px) * .28); }
+.s3 { width: 13vw; height: calc((100vh - 128px) * .52); }
+.names { position: absolute; left: 6vw; top: calc(var(--ly) + 14px); display: flex; gap: 3vw; font-size: 14px; font-weight: 300; }
+.names span:nth-child(1) { width: 15vw; } .names span:nth-child(2) { width: 19vw; } .names span:nth-child(3) { width: 13vw; }
+.p-services .txt { position: absolute; left: 6vw; top: calc(var(--ly) + 64px); display: flex; align-items: baseline; gap: 4vw; flex-wrap: wrap; width: 80vw; }
+.p-services .say { max-width: 36ch; }
+
+/* 5. Work: a strip hanging from the line */
+.p-work { width: 118vw; }
+.p-work .txt { position: absolute; left: 6vw; bottom: calc(var(--stand) + 28px); display: flex; align-items: baseline; gap: 3vw; }
+.film { position: absolute; left: 6vw; top: var(--ly); display: flex; gap: 1.6vw; height: 33%; }
+.film figure:nth-child(1) { width: 30vw; } .film figure:nth-child(2) { width: 17vw; } .film figure:nth-child(3) { width: 24vw; } .film figure:nth-child(4) { width: 20vw; }
+
+/* 6. Clients: logos sit on the line */
+.p-clients { width: 86vw; }
+.p-clients .txt { position: absolute; left: 6vw; top: calc(var(--ly) + 32px); }
+.p-clients .say { max-width: 26ch; }
+.logos { list-style: none; margin: 0; padding: 0; position: absolute; left: 6vw; right: 6vw; bottom: calc(var(--stand) + 18px); display: flex; justify-content: space-between; align-items: flex-end; gap: 3vw; }
+.logos li { height: 44px; display: flex; align-items: flex-end; }
+.logos img, .logos svg { max-height: 40px; max-width: 8vw; width: auto; opacity: .8; filter: grayscale(1); }
+
+/* 7. Contact */
+.p-contact { width: 100vw; background: var(--char); color: var(--on-char); margin-left: 2vw; }
+.p-contact .pin { color: var(--on-char-muted); }
+.invite .ln { display: block; white-space: nowrap; }
+@media (max-width: 900px) { .invite .ln { white-space: normal; } }
+.p-contact .invite { position: absolute; left: 6vw; bottom: calc(var(--stand) + 28px); width: 44vw; }
+.p-contact .write { position: absolute; left: 6vw; top: calc(var(--ly) + 32px); display: flex; align-items: center; column-gap: 40px; row-gap: 14px; flex-wrap: wrap; }
+.write-label { flex-basis: 100%; font-size: 13px; color: var(--on-char-muted); }
+.copied { font-size: 13px; color: var(--on-char-muted); opacity: 0; transition: opacity .3s ease; }
+.copied.on { opacity: 1; }
+.big { display: grid; gap: 4px; }
+.big span { font-size: 13px; color: var(--on-char-muted); }
+.big b { font-weight: 200; font-size: clamp(20px, 1.8vw, 30px); overflow-wrap: anywhere; }
+.big a { color: inherit; text-decoration: none; }
+.big a:hover { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; }
+.hp { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
+.status a { color: inherit; }
+form { position: absolute; left: 62vw; right: 6vw; top: 9%; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; }
+fieldset { grid-column: 1 / -1; border: 0; margin: 0; padding: 0; }
+legend, form label { font-size: 13px; color: var(--on-char-muted); padding: 0; }
+legend { margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chips label { font-size: 14px; color: var(--on-char); border: 1px solid var(--on-char-faint); border-radius: 999px; height: 36px; padding-inline: 15px; display: inline-flex; align-items: center; cursor: pointer; transition: background .2s, color .2s; }
+.chips input:checked + label { background: var(--on-char); color: var(--char); border-color: var(--on-char); }
+.chips input:focus-visible + label { outline: 1.5px solid var(--on-char); outline-offset: 3px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+.field input, .field textarea { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--on-char-faint); color: var(--on-char); font: 300 17px/1.4 var(--sans); padding: 6px 0 10px; border-radius: 0; }
+.field textarea { resize: none; height: 64px; }
+.field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--on-char); }
+.send { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.send button { background: none; border: 0; color: var(--on-char); font: 400 16px var(--sans); border-bottom: 1px solid currentColor; padding: 0 0 3px; cursor: pointer; }
+.status { font-size: 13px; color: var(--on-char-muted); }
+.legal { position: absolute; left: 6vw; right: 6vw; bottom: 18px; display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--on-char-muted); }
+
+.wa { position: fixed; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(var(--bottom) + 14px + env(safe-area-inset-bottom, 0px)); z-index: 40; width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; }
+.wa svg { width: 22px; height: 22px; }
+.wa { transition: opacity .5s ease, visibility .5s ease; }
+.wa.off { opacity: 0; visibility: hidden; pointer-events: none; }
+/* Social icons: floating round buttons in the WhatsApp spot, faded in on Contact (home) or at the end of the page (Work) */
+.social { position: fixed; right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(var(--bottom) + 14px + env(safe-area-inset-bottom, 0px)); z-index: 40; display: flex; gap: 10px; pointer-events: none; }
+.social a { width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; opacity: 0; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease; }
+.social a + a { transition-delay: .1s; }
+.social.in { pointer-events: auto; }
+.social.in a { opacity: 1; transform: none; }
+.social svg { width: 22px; height: 22px; }
+@media (max-width: 900px) { .social { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); } }
+@media (prefers-reduced-motion: reduce) { .social a { transition: none; } }
+
+
+
+/* Brand marks from the vector logo */
+.brand svg { display: block; width: 100%; height: auto; aspect-ratio: 13400 / 1450; fill: var(--ink); }
+.mark { position: absolute; z-index: 4; display: block; }
+.mark svg { display: block; width: 100%; height: 100%; }
+.p-open .under { transform-origin: left; animation: draw 1.1s cubic-bezier(.6,0,.2,1) both; animation-delay: var(--after-intro, .2s); }
+@keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.markO { width: 26px; height: 26px; margin: -13px 0 0 -13px; top: var(--ly); fill: var(--on-char); }
+.endnote { position: absolute; z-index: 3; top: calc(var(--ly) + 22px); font-size: 13px; font-weight: 300; color: var(--on-char-muted); transform: translateX(-50%); white-space: nowrap; }
+.meaning { position: absolute; left: 6vw; top: calc(var(--ly) + 18px); font-size: 14px; font-weight: 300; color: var(--muted); max-width: 34ch; }
+.meaning strong { font-weight: 500; color: var(--ink); }
+
+/* Intro: the logo set, pages 1 to 4 */
+.intro { position: fixed; inset: 0; z-index: 200; background-color: var(--paper); display: grid; place-items: center; cursor: pointer; overflow: hidden; transition: background-color 1.1s ease; }
+.intro.gone { visibility: hidden; }
+.intro svg { transform-origin: 0 0; transition: transform 1.1s cubic-bezier(.65,0,.35,1); }
+.intro.reveal { background-color: transparent; pointer-events: none; }
+.intro.tagout .tag, .intro.reveal .tag { animation: tagout .3s ease forwards; }
+.intro.reveal .skip { opacity: 0; transition: opacity .3s; }
+.intro.fast, .intro.fast svg { transition-duration: .45s; }
+.intro.fast .lt { animation: none; opacity: 1; }
+.intro.fast .rule { animation: none; opacity: 0; }
+@keyframes tagout { from { opacity: 1; } to { opacity: 0; } }
+body.intro-on .brand svg { visibility: hidden; }
+.intro .rule { transform-box: fill-box; transform-origin: left; animation: draw 2.6s cubic-bezier(.45,0,.55,1) both, fade .8s ease 3.6s forwards; }
+.intro svg { position: relative; width: min(70vw, 980px); height: auto; fill: var(--ink); overflow: visible; }
+.intro .lt { opacity: 0; animation: letter .8s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(1.3s + var(--i) * .15s); }
+@keyframes letter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade { to { opacity: 0; } }
+.intro .tag { position: absolute; left: 0; right: 0; top: calc(50% + min(7vw, 98px)); text-align: center; font-size: 14px; font-weight: 300; color: var(--muted); opacity: 0; animation: letter .7s ease 3.9s forwards; }
+.intro .skip { position: absolute; right: max(28px, var(--gr)); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); font-size: 13px; font-weight: 300; color: var(--muted); background: none; border: 0; cursor: pointer; font-family: var(--sans); }
+@media (prefers-reduced-motion: reduce) { .intro { display: none; } .p-open .under { animation: none; } }
+
+/* Fixes */
+.p-about { width: 104vw; }
+.pair { position: absolute; left: 44vw; top: 0; bottom: 0; width: 58vw; }
+.pair .clay { left: 0; }
+.p-about .hang { left: calc((100vh - var(--top) - var(--bottom)) * .432 + 3vw); }
+.p-work .txt { bottom: auto; top: 10%; }
+.film { top: calc(var(--ly) - 22%); height: 40%; }
+.logos svg { width: 86px; height: 36px; }
+
+/* Services: clickable 360 and film renders */
+.media { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; position: relative; overflow: hidden; }
+.media img { transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.media:hover img { transform: scale(1.03); }
+.cue-tag { position: absolute; left: 12px; bottom: 12px; color: #fff; font-size: 13px; font-weight: 400; border-bottom: 1px solid currentColor; padding-bottom: 2px; text-shadow: 0 1px 12px rgba(0,0,0,.45); }
+/* Contact: WhatsApp as an icon */
+.chat { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--on-char); align-self: end; }
+.chat svg { width: 26px; height: 26px; }
+.chat span { font-size: 13px; color: var(--on-char-muted); }
+.chat:hover span { color: var(--on-char); }
+/* Media popup */
+.pop { position: fixed; inset: 0; z-index: 120; background: rgba(20,18,16,.62); color: var(--on-char); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); opacity: 0; transition: opacity .3s ease; }
+.pop.show { opacity: 1; }
+.pop-win { width: min(80vw, calc((100vh - 140px) * 16 / 9)); display: grid; grid-template-rows: auto auto auto; transform: scale(.97); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.pop.show .pop-win { transform: none; }
+.pop-bar { height: 44px; display: flex; justify-content: flex-end; align-items: center; }
+.pop-x { width: 44px; height: 44px; margin-right: -12px; display: grid; place-items: center; background: none; border: 0; color: #fff; cursor: pointer; opacity: .85; }
+.pop-x:hover { opacity: 1; }
+.pop-x svg { width: 20px; height: 20px; }
+.pop-stage { position: relative; aspect-ratio: 16 / 9; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.35); display: grid; place-items: center; overflow: hidden; }
+.pop-stage iframe, .pop-stage video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.pop-foot { height: 40px; display: flex; justify-content: flex-end; align-items: center; }
+.pop-ext { font-size: 13px; font-weight: 300; color: rgba(255,255,255,.75); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.pop-ext:hover { color: #fff; }
+@media (max-width: 900px) { .pop-win { width: 100%; } .pop-stage { aspect-ratio: auto; height: min(72vh, 140vw); } }
+@media (prefers-reduced-motion: reduce) { .pop, .pop-win { transition: none; } }
+.pop-note { color: var(--on-char); padding: 24px; text-align: center; display: grid; gap: 14px; justify-items: center; font-weight: 200; font-size: clamp(20px, 2vw, 30px); }
+.pop-note a { font-size: 15px; font-weight: 400; color: var(--on-char); }
+
+/* Phone and narrow tablets: vertical, the line runs down the left */
+@media (max-width: 900px) {
+  .panel { grid-template-columns: minmax(0, 1fr); }
+  .pair { grid-template-columns: minmax(0, 1fr); }
+  .film { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .film figure { min-width: 0; }
+  .p-work .txt { flex-wrap: wrap; }
+  .media { height: 100%; }
+  :root { --top: 64px; --bottom: 0px; }
+  .bottombar, .topnav a:not(.tlink), .seg, .markO, .endnote, .p-open .under { display: none; }
+  .pair { position: static !important; display: grid; gap: 24px; }
+  .pair > * { position: relative !important; left: auto !important; top: auto !important; bottom: auto !important; }
+  .meaning { position: static !important; }
+  .intro svg { width: 86vw; }
+  .intro .rule { transform-box: fill-box; transform-origin: left; animation: draw 2.6s cubic-bezier(.45,0,.55,1) both, fade .8s ease 3.6s forwards; }
+  .film { height: auto !important; }
+  .brand { width: 124px; }
+  .hs { height: auto !important; padding-top: calc(var(--top) + env(safe-area-inset-top, 0px)); }
+  .hs-sticky { position: static; height: auto; overflow: visible; }
+  .track { display: block; transform: none !important; }
+  .vline { display: block; position: absolute; left: calc(var(--gl) - 6px); top: 0; bottom: 0; width: 1px; background: var(--faint); z-index: 3; }
+  .vline i { position: absolute; inset: 0 0 auto 0; height: 0; background: var(--ink); }
+  .panel { width: auto !important; height: auto; margin: 0 !important; padding: 64px var(--gr) 64px calc(var(--gl) + 14px); display: grid; gap: 28px; }
+  .panel > *, .p-open .cap, .p-open .sub { position: static !important; width: auto !important; height: auto !important; left: auto; right: auto; top: auto; bottom: auto; }
+  .pin { order: -2; }
+  .p-open { padding: 0; height: 82svh !important; min-height: 460px; display: block; }
+  .p-open > img, .p-open > video { height: 100% !important; }
+  .p-open > video { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; }
+  .p-open .cap { position: absolute !important; bottom: 76px; left: 20px; right: 20px; }
+  .p-open .sub { position: absolute !important; bottom: 24px; left: 20px; right: 20px; max-width: 34ch; line-height: 1.5; }
+  .clay { aspect-ratio: 3 / 2; width: 100% !important; height: auto !important; }
+  .clay figcaption { position: absolute; left: 0; right: auto; top: calc(100% + 10px); }
+  .p-about .pair { gap: 56px; }
+  .p-about .hang { aspect-ratio: 3 / 2; width: 70% !important; justify-self: end; }
+  .ground { display: none; }
+  .p-approach { background: linear-gradient(180deg, var(--paper) 0 40%, var(--stone) 40% 100%); }
+  .p-approach figure { aspect-ratio: 5 / 4; width: 100% !important; }
+  .skyline { display: flex; gap: 10px; align-items: flex-end; }
+  .standing { width: auto !important; flex: 1; }
+  .s1 { height: 200px !important; } .s2 { height: 140px !important; } .s3 { height: 250px !important; }
+  .names { display: flex; gap: 10px; } .names span { flex: 1; width: auto !important; }
+  .film { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .film figure { width: auto !important; aspect-ratio: 3 / 2; }
+  .film figure:first-child, .film figure:nth-child(4) { grid-column: 1 / -1; }
+  .logos { flex-wrap: wrap; justify-content: flex-start; gap: 24px 32px; }
+  .logos img, .logos svg { max-width: 120px; }
+  .p-contact { padding-bottom: 96px; }
+  form { grid-template-columns: 1fr; }
+  .legal { flex-wrap: wrap; }
+  .wa { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wm" viewBox="8150 14130 13400 1450"><path d="M8334.67 15502.18l0 -595.83 -122.85 0 0 -120.15 122.85 0 0 -590.24 393.08 0c97.8,0 181.01,34.47 250.25,103.7 69.55,69.87 104.63,153.39 104.63,250.88 0,108.67 -41.6,198.71 -124.81,270.43 62.09,28.88 111.46,72.03 148.41,129.16 37.57,58.69 56.51,122.96 56.51,192.82 0,99.35 -35.08,184.12 -104.63,253.66 -70.49,70.48 -154.63,105.57 -253.05,105.57l-470.39 0zm120.16 -715.98l272.92 0c64.27,0 119.54,-22.98 165.49,-68.93 46.26,-46.26 69.24,-101.84 69.24,-166.73 0,-64.58 -22.98,-119.85 -69.24,-165.49 -45.95,-45.95 -101.22,-68.93 -165.49,-68.93l-272.92 0 0 470.08zm0 595.82l350.23 0c65.51,0 121.71,-23.29 168.28,-69.86 46.27,-46.88 69.24,-103.08 69.24,-169.21 0,-64.89 -22.97,-120.78 -69.24,-167.36 -46.57,-46.26 -102.77,-69.24 -168.28,-69.24l-350.23 0 0 475.67z"/><path d="M10354.38 15515.83c-183.81,0 -340.6,-65.2 -470.38,-195.6 -130.41,-129.79 -195.61,-286.59 -195.61,-470.39 0,-183.5 65.2,-340.6 195.61,-471.01 129.78,-129.78 286.57,-194.67 470.38,-194.67 183.81,0 340.92,64.89 471.01,194.67 129.78,130.41 194.67,287.51 194.67,471.01 0,183.8 -64.89,340.6 -194.67,470.39 -130.09,130.4 -287.2,195.6 -471.01,195.6zm-0.16 -1211.51c-150.27,0 -278.81,53.1 -385.62,159.91 -91.41,91.4 -143.69,198.72 -156.87,321.97l1084.99 0c-13.18,-123.25 -65.47,-230.57 -156.87,-321.97 -106.81,-106.81 -235.35,-159.91 -385.63,-159.91zm-543.23 602.03c11.88,126.49 64.41,236.24 157.61,329.43 106.81,106.5 235.35,159.9 385.62,159.9 150.28,0 278.82,-53.4 385.63,-159.9 93.19,-93.19 145.73,-202.94 157.61,-329.43l-1086.47 0z"/><path d="M11606.87 14786.2l-122.85 0 0 120.15 122.85 0 0 594.9 120.16 0 0 -589.31 312.97 0 306.45 590.24 134.75 0 -312.04 -602.34c77,-20.5 140.03,-62.41 189.09,-125.44 50.61,-64.89 75.76,-138.17 75.76,-220.14 0,-98.73 -35.09,-183.18 -104.64,-252.73 -69.86,-70.48 -154,-105.57 -253.05,-105.57l-469.45 0 0 590.24zm120.16 5.59l0 -5.59 0 -470.08 349.29 0c65.52,0 121.71,23.29 168.29,69.86 46.26,46.89 69.24,102.77 69.24,168.28 0,65.52 -22.98,121.72 -69.24,168.29 -46.58,46.26 -102.77,69.24 -168.29,69.24l-349.29 0z"/><path d="M13038.98 14789l-123.78 0 0 120.15 123.78 0 0 593.03 321.04 0c180.08,0 334.08,-63.96 462.01,-191.88 127.61,-127.3 191.26,-280.99 191.26,-461.38 0,-180.08 -63.65,-333.78 -191.26,-461.08 -127.93,-127.91 -281.93,-191.88 -462.01,-191.88l-321.04 0 0 593.04zm119.23 120.15l0 -120.15 0 -473.81 201.81 0c147.48,0 273.23,52.16 377.55,156.48 104.33,104.33 156.49,230.08 156.49,377.25 0,147.48 -52.16,273.22 -156.49,377.55 -104.32,104.32 -230.07,156.48 -377.55,156.48l-201.81 0 0 -473.8z"/><path d="M14600.87,14195.96 L14600.87,14787.13 L14477.71,14787.13 L14477.71,14907.29 L14600.87,14907.29 L14600.87,15502.18 L15267.48,15502.18 L15267.48,15382.02 L14720.72,15382.02 L14720.72,14907.29 L15152.92,14907.29 L15152.92,14787.13 L14720.72,14787.13 L14720.72,14316.12 L15267.48,14316.12 L15267.48,14195.96Z"/><path d="M15854.14 14787.13l-122.85 0 0 120.16 122.85 0 0 593.96 120.16 0 0 -589.31 312.97 0 306.45 590.24 134.75 0 -312.04 -602.34c77,-20.5 140.03,-62.41 189.09,-125.44 50.61,-64.89 75.76,-138.17 75.76,-220.14 0,-98.73 -35.09,-183.18 -104.64,-252.73 -69.86,-70.48 -154,-105.57 -253.04,-105.57l-469.46 0 0 591.17zm120.16 4.66l0 -4.66 0 -471.01 349.3 0c65.51,0 121.71,23.29 168.28,69.86 46.26,46.89 69.24,102.77 69.24,168.28 0,65.52 -22.98,121.72 -69.24,168.29 -46.57,46.26 -102.77,69.24 -168.28,69.24l-349.3 0z"/><path d="M17289.04,14195.96 L17289.04,15502.18 L18015.58,15502.18 L18015.58,15382.02 L17408.89,15382.02 L17408.89,14195.96Z"/><path d="M18557.84,15502.18 L18678.93,15502.18 L18678.93,14189.45 L18557.84,14189.45Z"/><path d="M20061.67,14195.96 L20061.67,15284.84 L19411.52,14195.96 L19281.42,14195.96 L19281.42,15502.18 L19401.27,15502.18 L19401.27,14413.3 L20052.67,15502.18 L20181.83,15502.18 L20181.83,14195.96Z"/><path d="M20821.58,14195.96 L20821.58,14787.13 L20698.42,14787.13 L20698.42,14907.29 L20821.58,14907.29 L20821.58,15502.18 L21488.19,15502.18 L21488.19,15382.02 L20941.43,15382.02 L20941.43,14907.29 L21373.62,14907.29 L21373.62,14787.13 L20941.43,14787.13 L20941.43,14316.12 L21488.19,14316.12 L21488.19,14195.96Z"/></symbol><symbol id="mB" viewBox="8180 14160 810 1380"><path d="M8334.67 15502.18l0 -595.83 -122.85 0 0 -120.15 122.85 0 0 -590.24 393.08 0c97.8,0 181.01,34.47 250.25,103.7 69.55,69.87 104.63,153.39 104.63,250.88 0,108.67 -41.6,198.71 -124.81,270.43 62.09,28.88 111.46,72.03 148.41,129.16 37.57,58.69 56.51,122.96 56.51,192.82 0,99.35 -35.08,184.12 -104.63,253.66 -70.49,70.48 -154.63,105.57 -253.05,105.57l-470.39 0zm120.16 -715.98l272.92 0c64.27,0 119.54,-22.98 165.49,-68.93 46.26,-46.26 69.24,-101.84 69.24,-166.73 0,-64.58 -22.98,-119.85 -69.24,-165.49 -45.95,-45.95 -101.22,-68.93 -165.49,-68.93l-272.92 0 0 470.08zm0 595.82l350.23 0c65.51,0 121.71,-23.29 168.28,-69.86 46.27,-46.88 69.24,-103.08 69.24,-169.21 0,-64.89 -22.97,-120.78 -69.24,-167.36 -46.57,-46.26 -102.77,-69.24 -168.28,-69.24l-350.23 0 0 475.67z"/></symbol><symbol id="mO" viewBox="9660 14160 1390 1380"><path d="M10354.38 15515.83c-183.81,0 -340.6,-65.2 -470.38,-195.6 -130.41,-129.79 -195.61,-286.59 -195.61,-470.39 0,-183.5 65.2,-340.6 195.61,-471.01 129.78,-129.78 286.57,-194.67 470.38,-194.67 183.81,0 340.92,64.89 471.01,194.67 129.78,130.41 194.67,287.51 194.67,471.01 0,183.8 -64.89,340.6 -194.67,470.39 -130.09,130.4 -287.2,195.6 -471.01,195.6zm-0.16 -1211.51c-150.27,0 -278.81,53.1 -385.62,159.91 -91.41,91.4 -143.69,198.72 -156.87,321.97l1084.99 0c-13.18,-123.25 -65.47,-230.57 -156.87,-321.97 -106.81,-106.81 -235.35,-159.91 -385.63,-159.91zm-543.23 602.03c11.88,126.49 64.41,236.24 157.61,329.43 106.81,106.5 235.35,159.9 385.62,159.9 150.28,0 278.82,-53.4 385.63,-159.9 93.19,-93.19 145.73,-202.94 157.61,-329.43l-1086.47 0z"/></symbol></svg>
+<div class="intro" id="intro" role="presentation" hidden>
+  <svg viewBox="8150 14130 13400 1450" aria-hidden="true"><rect class="rule" x="-20000" y="14787.13" width="62000" height="120.16"/><path class="lt" style="--i:0" d="M8334.67 15502.18l0 -595.83 -122.85 0 0 -120.15 122.85 0 0 -590.24 393.08 0c97.8,0 181.01,34.47 250.25,103.7 69.55,69.87 104.63,153.39 104.63,250.88 0,108.67 -41.6,198.71 -124.81,270.43 62.09,28.88 111.46,72.03 148.41,129.16 37.57,58.69 56.51,122.96 56.51,192.82 0,99.35 -35.08,184.12 -104.63,253.66 -70.49,70.48 -154.63,105.57 -253.05,105.57l-470.39 0zm120.16 -715.98l272.92 0c64.27,0 119.54,-22.98 165.49,-68.93 46.26,-46.26 69.24,-101.84 69.24,-166.73 0,-64.58 -22.98,-119.85 -69.24,-165.49 -45.95,-45.95 -101.22,-68.93 -165.49,-68.93l-272.92 0 0 470.08zm0 595.82l350.23 0c65.51,0 121.71,-23.29 168.28,-69.86 46.27,-46.88 69.24,-103.08 69.24,-169.21 0,-64.89 -22.97,-120.78 -69.24,-167.36 -46.57,-46.26 -102.77,-69.24 -168.28,-69.24l-350.23 0 0 475.67z"/><path class="lt" style="--i:1" d="M10354.38 15515.83c-183.81,0 -340.6,-65.2 -470.38,-195.6 -130.41,-129.79 -195.61,-286.59 -195.61,-470.39 0,-183.5 65.2,-340.6 195.61,-471.01 129.78,-129.78 286.57,-194.67 470.38,-194.67 183.81,0 340.92,64.89 471.01,194.67 129.78,130.41 194.67,287.51 194.67,471.01 0,183.8 -64.89,340.6 -194.67,470.39 -130.09,130.4 -287.2,195.6 -471.01,195.6zm-0.16 -1211.51c-150.27,0 -278.81,53.1 -385.62,159.91 -91.41,91.4 -143.69,198.72 -156.87,321.97l1084.99 0c-13.18,-123.25 -65.47,-230.57 -156.87,-321.97 -106.81,-106.81 -235.35,-159.91 -385.63,-159.91zm-543.23 602.03c11.88,126.49 64.41,236.24 157.61,329.43 106.81,106.5 235.35,159.9 385.62,159.9 150.28,0 278.82,-53.4 385.63,-159.9 93.19,-93.19 145.73,-202.94 157.61,-329.43l-1086.47 0z"/><path class="lt" style="--i:2" d="M11606.87 14786.2l-122.85 0 0 120.15 122.85 0 0 594.9 120.16 0 0 -589.31 312.97 0 306.45 590.24 134.75 0 -312.04 -602.34c77,-20.5 140.03,-62.41 189.09,-125.44 50.61,-64.89 75.76,-138.17 75.76,-220.14 0,-98.73 -35.09,-183.18 -104.64,-252.73 -69.86,-70.48 -154,-105.57 -253.05,-105.57l-469.45 0 0 590.24zm120.16 5.59l0 -5.59 0 -470.08 349.29 0c65.52,0 121.71,23.29 168.29,69.86 46.26,46.89 69.24,102.77 69.24,168.28 0,65.52 -22.98,121.72 -69.24,168.29 -46.58,46.26 -102.77,69.24 -168.29,69.24l-349.29 0z"/><path class="lt" style="--i:3" d="M13038.98 14789l-123.78 0 0 120.15 123.78 0 0 593.03 321.04 0c180.08,0 334.08,-63.96 462.01,-191.88 127.61,-127.3 191.26,-280.99 191.26,-461.38 0,-180.08 -63.65,-333.78 -191.26,-461.08 -127.93,-127.91 -281.93,-191.88 -462.01,-191.88l-321.04 0 0 593.04zm119.23 120.15l0 -120.15 0 -473.81 201.81 0c147.48,0 273.23,52.16 377.55,156.48 104.33,104.33 156.49,230.08 156.49,377.25 0,147.48 -52.16,273.22 -156.49,377.55 -104.32,104.32 -230.07,156.48 -377.55,156.48l-201.81 0 0 -473.8z"/><path class="lt" style="--i:4" d="M14600.87,14195.96 L14600.87,14787.13 L14477.71,14787.13 L14477.71,14907.29 L14600.87,14907.29 L14600.87,15502.18 L15267.48,15502.18 L15267.48,15382.02 L14720.72,15382.02 L14720.72,14907.29 L15152.92,14907.29 L15152.92,14787.13 L14720.72,14787.13 L14720.72,14316.12 L15267.48,14316.12 L15267.48,14195.96Z"/><path class="lt" style="--i:5" d="M15854.14 14787.13l-122.85 0 0 120.16 122.85 0 0 593.96 120.16 0 0 -589.31 312.97 0 306.45 590.24 134.75 0 -312.04 -602.34c77,-20.5 140.03,-62.41 189.09,-125.44 50.61,-64.89 75.76,-138.17 75.76,-220.14 0,-98.73 -35.09,-183.18 -104.64,-252.73 -69.86,-70.48 -154,-105.57 -253.04,-105.57l-469.46 0 0 591.17zm120.16 4.66l0 -4.66 0 -471.01 349.3 0c65.51,0 121.71,23.29 168.28,69.86 46.26,46.89 69.24,102.77 69.24,168.28 0,65.52 -22.98,121.72 -69.24,168.29 -46.57,46.26 -102.77,69.24 -168.28,69.24l-349.3 0z"/><path class="lt" style="--i:6" d="M17289.04,14195.96 L17289.04,15502.18 L18015.58,15502.18 L18015.58,15382.02 L17408.89,15382.02 L17408.89,14195.96Z"/><path class="lt" style="--i:7" d="M18557.84,15502.18 L18678.93,15502.18 L18678.93,14189.45 L18557.84,14189.45Z"/><path class="lt" style="--i:8" d="M20061.67,14195.96 L20061.67,15284.84 L19411.52,14195.96 L19281.42,14195.96 L19281.42,15502.18 L19401.27,15502.18 L19401.27,14413.3 L20052.67,15502.18 L20181.83,15502.18 L20181.83,14195.96Z"/><path class="lt" style="--i:9" d="M20821.58,14195.96 L20821.58,14787.13 L20698.42,14787.13 L20698.42,14907.29 L20821.58,14907.29 L20821.58,15502.18 L21488.19,15502.18 L21488.19,15382.02 L20941.43,15382.02 L20941.43,14907.29 L21373.62,14907.29 L21373.62,14787.13 L20941.43,14787.13 L20941.43,14316.12 L21488.19,14316.12 L21488.19,14195.96Z"/></svg>
+  <p class="tag">Between vision and reality</p>
+  <button class="skip" id="skip" type="button">Skip</button>
+</div>
+
+<header class="bar topbar">
+  <div class="in">
+    <a class="brand" href="#open" data-go="open" aria-label="Borderline, back to start"><svg role="img" aria-label="Borderline"><use href="#wm"/></svg></a>
+    <nav class="topnav" aria-label="Main">
+      <a href="#about" data-go="about">About</a>
+      <a href="#services" data-go="services">Services</a>
+      <a href="work.html">Work</a>
+      <a class="tlink" href="#contact" data-go="contact">Discuss your project</a>
+    </nav>
+  </div>
+</header>
+
+<main class="hs" id="hs">
+  <div class="hs-sticky">
+    <div class="track" id="track">
+      <span class="seg" id="segA"><i></i></span>
+      <span class="seg light" id="segB"><i></i></span>
+      <span class="mark markO" id="dot"><svg aria-hidden="true"><use href="#mO"/></svg></span><span class="endnote" id="endnote">Your project starts here</span>
+      <span class="vline" id="vline"><i></i></span>
+
+      <section class="panel p-open" id="open" aria-label="Opening">
+        <img src="img/hero/hero-poster.webp?v=2" alt="Pool deck at sunset, from the studio showreel">
+        <video class="hero-vid" id="heroVid" muted loop playsinline preload="none" aria-hidden="true"></video>
+        <div class="cap"><h1 class="say">Experience your <strong>vision</strong></h1></div>
+        <span class="under" aria-hidden="true"></span>
+        <p class="sub">Architectural visualization with clarity, atmosphere, and purpose</p>
+      </section>
+
+      <section class="panel p-about" id="about" aria-labelledby="l-about">
+        <p class="label pin" id="l-about">About</p>
+        <div class="txt"><p class="say"><span class="ln">More than drawings</span> <span class="ln"><strong>A sense of place</strong></span></p><p class="support">Every project carries a purpose and an aspiration. Through light, atmosphere, and detail, we bring its character into focus.</p></div>
+        <p class="meaning"><strong>Borderline:</strong> the line between vision and reality</p>
+        <div class="pair">
+        <figure class="clay" id="clay">
+          <img src="img/home/clay-final.webp" alt="Aerial render of a lakeside mixed-use district, final">
+          <img class="c" src="img/home/clay-base.webp" alt="" aria-hidden="true">
+          <figcaption class="note">Clay view to final render</figcaption>
+        </figure>
+        <figure class="hang"><img src="img/work/full/interior-02.webp" alt="Infinity pool framed by a textured brick screen wall" loading="lazy"></figure>
+        </div>
+      </section>
+
+      <section class="panel p-approach" id="approach" aria-labelledby="l-approach">
+        <span class="ground" aria-hidden="true"></span>
+        <p class="label pin" id="l-approach">Approach</p>
+        <figure><img src="img/work/full/interior-21.webp" alt="Restaurant hall with a timber roof, glass walls and a tree at its centre" loading="lazy"></figure>
+        <div class="txt">
+          <p class="say">We begin with the architecture, not the image</p><p class="support">Design intent guides every perspective — revealing what matters while staying <strong>true to the project</strong>.</p>
+        </div>
+      </section>
+
+      <section class="panel p-services" id="services" aria-labelledby="l-services">
+        <p class="label pin" id="l-services">Services</p>
+        <div class="skyline">
+          <figure class="standing s1"><img src="img/work/full/commercial-27.webp" alt="Still image: waterfront office tower" loading="lazy"></figure>
+          <figure class="standing s2"><button class="media" type="button" data-media="tour" aria-label="Open the 360° virtual tour"><img src="img/home/tour-thumb.webp" alt="" loading="lazy"><span class="cue-tag">View tour</span></button></figure>
+          <figure class="standing s3"><button class="media" type="button" data-media="film" aria-label="Play the animation"><img src="img/work/full/masterplan-05.webp" alt="" loading="lazy"><span class="cue-tag">Play film</span></button></figure>
+        </div>
+        <div class="names"><span>Still images</span><span>360° virtual tours</span><span>Animation</span></div>
+        <div class="txt">
+          <p class="say">To reveal the design, explore the space, and tell the story behind each project</p>
+        </div>
+      </section>
+
+      <section class="panel p-work" id="work" aria-labelledby="l-work">
+        <p class="label pin">Work</p>
+        <div class="txt"><h2 class="say" id="l-work"><a href="work.html" style="text-decoration:none">See the <strong>work</strong></a></h2><a class="tlink" href="work.html">All projects</a></div>
+        <div class="film">
+          <figure><img src="img/work/full/masterplan-02.webp" alt="Aerial view of a coastal masterplan at sunset" loading="lazy"></figure>
+          <figure><img src="img/work/full/residential-15.webp" alt="Hillside resort villas around a lit pool at dusk" loading="lazy"></figure>
+          <figure><img src="img/work/full/interior-17.webp" alt="Resort restaurant under a timber roof" loading="lazy"></figure>
+          <figure><img src="img/work/full/residential-17.webp" alt="Villa with an open-air stone bathroom under a steep thatched roof" loading="lazy"></figure>
+        </div>
+      </section>
+
+      <section class="panel p-clients" id="clients" aria-labelledby="l-clients">
+        <p class="label pin">Clients &amp; Collaborators</p>
+        <ul class="logos">
+          <li><img src="img/logo-ciputra.png" alt="Ciputra" loading="lazy"></li>
+          <li><img src="img/logo-jaya.png" alt="Jaya Ancol" loading="lazy"></li>
+          <li><img src="img/logo-ancol.png" alt="Ancol" loading="lazy"></li>
+          <li><img src="img/logo-psud.png" alt="PSUD" loading="lazy"></li>
+          <li><img src="img/logo-wiratman.png" alt="Wiratman" loading="lazy"></li>
+          <li><img src="img/logo-io.png" alt="IO" loading="lazy"></li>
+          <li><img src="img/logo-that.png" alt="Tata Habitat Tujuh (THaT)" loading="lazy"></li>
+          <li><img src="img/logo-pdo.png" alt="Progressive Design Office Architecture" loading="lazy"></li>
+        </ul>
+        <div class="txt"><p class="say" id="l-clients">Trusted by <strong>architects and developers</strong></p></div>
+      </section>
+
+      <section class="panel p-contact" id="contact" aria-labelledby="l-contact">
+        <p class="label pin">Contact</p>
+        <h2 class="say invite" id="l-contact"><span class="ln">Show us your project</span> <span class="ln">Let’s bring your <strong>vision into focus</strong></span></h2>
+        <div class="write">
+          <span class="write-label">Write to us</span><a class="chat" id="mailLink" href="mailto:hello.this.is.borderline@gmail.com?subject=Project%20inquiry%20%E2%80%94%20Borderline%20Visualization" aria-label="Email Borderline Visualization"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="2.75" y="5.25" width="18.5" height="13.5" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg><span>Email</span></a>
+          <a class="chat" href="https://wa.me/6281391654607" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3Z"/></svg><span>WhatsApp</span></a>
+          <span class="copied" id="copied" role="status" aria-live="polite"></span>
+        </div>
+        <form id="contactForm" novalidate>
+          <fieldset>
+            <legend>What are you looking for?</legend>
+            <div class="chips">
+              <input type="checkbox" id="s-still" value="Still images"><label for="s-still">Still images</label>
+              <input type="checkbox" id="s-360" value="360° virtual tour"><label for="s-360">360° virtual tour</label>
+              <input type="checkbox" id="s-anim" value="Animation"><label for="s-anim">Animation</label>
+              <input type="checkbox" id="s-unsure" value="Not sure yet"><label for="s-unsure">Not sure yet</label>
+            </div>
+          </fieldset>
+          <div class="field"><label for="f-name">Name</label><input id="f-name" required autocomplete="name"></div>
+          <div class="field"><label for="f-company">Company</label><input id="f-company" autocomplete="organization"></div>
+          <div class="field full"><label for="f-email">Email</label><input id="f-email" type="email" required autocomplete="email"></div>
+          <div class="field full"><label for="f-msg">Tell us about your project</label><textarea id="f-msg" required placeholder="Project type, location, scope, and timeline"></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="f-web">Website</label><input id="f-web" tabindex="-1" autocomplete="off"></div>
+          <div class="send"><button type="submit">Send your project brief</button><p class="status" id="formStatus" role="status"></p></div>
+        </form>
+        <div class="legal"><span>© 2026 Borderline Visualization · Indonesia</span></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="bar bottombar">
+  <div class="in">
+    <span class="where" id="where">Opening</span>
+    <a class="cue" id="cue" href="#about" data-go="about">Continue <svg viewBox="0 0 22 10" fill="none" stroke="currentColor"><path d="M0 5h21M16 1l5 4-5 4"/></svg></a>
+  </div>
+</footer>
+
+<a class="wa" href="https://wa.me/6281391654607" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3Z"/></svg></a>
+
+<div class="social" aria-label="Social media"><a href="https://www.instagram.com/borderline.viz/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a><a href="https://www.behance.net/borderline" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z"/></svg></a></div>
+
+<div class="pop" id="pop" hidden role="dialog" aria-modal="true" aria-label="Media viewer">
+  <div class="pop-win" id="popWin">
+    <div class="pop-bar"><button class="pop-x" id="popX" type="button" aria-label="Close"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 3l14 14M17 3 3 17"/></svg></button></div>
+    <div class="pop-stage" id="popStage"></div>
+    <div class="pop-foot"><a class="pop-ext" id="popExt" href="#" target="_blank" rel="noopener">Open in a new tab</a></div>
+  </div>
+</div>
+<script>
+(() => {
+  const hs = document.getElementById('hs'), track = document.getElementById('track');
+  const sticky = hs.querySelector('.hs-sticky');
+  sticky.addEventListener('scroll', () => { if (!narrow.matches) { sticky.scrollLeft = 0; sticky.scrollTop = 0; } });
+  const where = document.getElementById('where'), cue = document.getElementById('cue');
+  const endnote = document.getElementById('endnote');
+  const segA = document.getElementById('segA'), segB = document.getElementById('segB'), dot = document.getElementById('dot');
+  const vfill = document.querySelector('#vline i');
+  const clayTop = document.querySelector('#clay .c');
+  const panels = [...track.querySelectorAll('.panel')];
+  const open = document.getElementById('open'), contact = document.getElementById('contact');
+  const narrow = matchMedia('(max-width: 900px)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const names = { open: 'Opening', about: 'About', approach: 'Approach', services: 'Services', work: 'Work', clients: 'Clients & Collaborators', contact: 'Contact' };
+  let maxX = 0, aStart = 0, aEnd = 0, bEnd = 0;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  function size() {
+    if (narrow.matches) { hs.style.height = ''; track.style.transform = ''; update(); return; }
+    maxX = Math.max(0, track.scrollWidth - track.parentElement.clientWidth);
+    hs.style.height = (maxX + innerHeight) + 'px';
+    /* Line geometry in track coordinates: leaves the hero, crosses everything, ends at the invitation */
+    aStart = open.offsetLeft + open.offsetWidth;
+    aEnd = contact.offsetLeft;
+    bEnd = contact.offsetLeft + contact.offsetWidth * 0.52;
+    Object.assign(segA.style, { left: aStart + 'px', width: (aEnd - aStart) + 'px' });
+    Object.assign(segB.style, { left: aEnd + 'px', width: (bEnd - aEnd) + 'px' });
+    dot.style.left = bEnd + 'px'; endnote.style.left = bEnd + 'px';
+    update();
+  }
+
+  function update() {
+    if (narrow.matches) {
+      const r = track.getBoundingClientRect();
+      vfill.style.height = clamp(innerHeight * 0.6 - r.top, 0, r.height) + 'px';
+      const cr = clayTop.parentElement.getBoundingClientRect();
+      clayTop.style.opacity = clamp((cr.top - innerHeight * 0.2) / (innerHeight * 0.5), 0, 1);
+      contactView();
+      return;
+    }
+    if (sticky.scrollLeft || sticky.scrollTop) { sticky.scrollLeft = 0; sticky.scrollTop = 0; }
+    const x = clamp(scrollY - hs.offsetTop, 0, maxX);
+    track.style.transform = `translate3d(${-x}px,0,0)`;
+    /* The passed part of the line darkens up to the middle of the screen */
+    const done = x + innerWidth * 0.5;
+    segA.firstChild.style.width = clamp(done - aStart, 0, aEnd - aStart) + 'px';
+    segB.firstChild.style.width = clamp(done - aEnd, 0, bEnd - aEnd) + 'px';
+    /* Clay fades to the final render as it reaches the middle */
+    const cr = clayTop.parentElement.getBoundingClientRect();
+    clayTop.style.opacity = clamp((cr.left + cr.width / 2 - innerWidth * 0.4) / (innerWidth * 0.4), 0, 1);
+    const cur = panels.reduce((a, p) => (p.offsetLeft <= done ? p : a), panels[0]);
+    where.textContent = names[cur.id] || '';
+    const next = panels[panels.indexOf(cur) + 1];
+    cue.style.opacity = next ? 1 : 0;
+    if (next) { cue.href = '#' + next.id; cue.dataset.go = next.id; }
+    contactView();
+  }
+  /* On the Contact panel: the floating WhatsApp button steps aside (WhatsApp is already in the panel) and the social icons fade in */
+  const contactEl = document.getElementById('contact'), waBtn = document.querySelector('.wa'), social = document.querySelector('.social');
+  function contactView() {
+    const r = contactEl.getBoundingClientRect();
+    const inView = narrow.matches ? r.top < innerHeight * 0.6 && r.bottom > 0 : r.left < innerWidth * 0.5 && r.right > 0;
+    waBtn.classList.toggle('off', inView);
+    social.classList.toggle('in', inView);
+  }
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', size);
+  narrow.addEventListener('change', size);
+  addEventListener('load', size);
+  size();
+
+
+  /* Arriving from another page with #section */
+  const goHash = () => { const id = location.hash.slice(1); const p = id && document.getElementById(id); if (!p || !p.classList.contains('panel')) return; const top = narrow.matches ? p.getBoundingClientRect().top + scrollY - 64 : hs.offsetTop + Math.min(maxX, p.offsetLeft); scrollTo({ top, behavior: 'auto' }); update(); };
+  addEventListener('load', () => setTimeout(goHash, 50));
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-go]'); if (!a) return;
+    const p = document.getElementById(a.dataset.go); if (!p) return;
+    e.preventDefault();
+    const top = narrow.matches ? p.getBoundingClientRect().top + scrollY - 64 : hs.offsetTop + Math.min(maxX, p.offsetLeft);
+    scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+
+
+  /* Hero showreel: 1080p on wide screens, 720p on phones; the still stays for reduced motion or data saver */
+  const vid = document.getElementById('heroVid');
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  if (vid && !reduce && !saveData) {
+    vid.src = matchMedia('(max-width: 900px)').matches ? 'img/hero/hero-720.mp4?v=2' : 'img/hero/hero-1080.mp4?v=2';
+    vid.addEventListener('playing', () => vid.classList.add('on'), { once: true });
+    const p = vid.play(); if (p && p.catch) p.catch(() => {});
+  }
+
+  /* Intro, once per browser session; skipped for reduced motion */
+  const intro = document.getElementById('intro');
+  let seen = false;
+  try { seen = sessionStorage.getItem('bdln-intro') === '1'; } catch (e) {}
+  if (!seen && !reduce && !location.hash) {
+    intro.hidden = false;
+    document.body.classList.add('intro-on');
+    document.documentElement.style.setProperty('--after-intro', '6.5s');
+    const mark = intro.querySelector('svg'), brandMark = document.querySelector('.brand svg');
+    const timers = []; let done = false;
+    /* The intro wordmark glides into the top-bar logo while the paper fades away */
+    const glide = fast => {
+      if (done) return; done = true; timers.forEach(clearTimeout);
+      if (fast) intro.classList.add('fast');
+      const a = mark.getBoundingClientRect(), b = brandMark.getBoundingClientRect();
+      mark.style.transform = `translate(${b.left - a.left}px, ${b.top - a.top}px) scale(${b.width / a.width})`;
+      intro.classList.add('reveal');
+      setTimeout(() => {
+        document.body.classList.remove('intro-on'); intro.classList.add('gone');
+        try { sessionStorage.setItem('bdln-intro', '1'); } catch (e) {}
+      }, fast ? 480 : 1130);
+    };
+    timers.push(setTimeout(() => intro.classList.add('tagout'), 5100));
+    timers.push(setTimeout(() => glide(false), 5400));
+    const skip = () => { if (done) return; document.documentElement.style.setProperty('--after-intro', '.5s'); glide(true); };
+    intro.addEventListener('click', skip);
+    addEventListener('keydown', function k() { skip(); removeEventListener('keydown', k); });
+  }
+
+  /* 360 tour and film popups */
+  const MEDIA = {
+    tour: { url: 'https://borderlinevisualization.github.io/L5Achillea_360VirtualTour/', kind: 'frame' },
+    /* Self-hosted showreel: 720p on phones, 1080p elsewhere */
+    film: { url: matchMedia('(max-width: 900px)').matches ? 'img/film/film-720.mp4?v=1' : 'img/film/film-1080.mp4?v=1', kind: 'video', poster: 'img/film/film-poster.webp?v=1' }
+  };
+  const pop = document.getElementById('pop'), stage = document.getElementById('popStage'), ext = document.getElementById('popExt');
+  let popFrom = null, popT = 0;
+  function openMedia(key) {
+    clearTimeout(popT); const m = MEDIA[key]; popFrom = document.activeElement;
+    stage.replaceChildren();
+    if (!m.url) {
+      stage.innerHTML = '<div class="pop-note">The film will be added soon</div>'; ext.hidden = true;
+    } else if (m.kind === 'video' && /\.mp4($|\?)/i.test(m.url)) {
+      const v = document.createElement('video'); v.src = m.url; if (m.poster) v.poster = m.poster; v.preload = 'auto'; v.controls = true; v.autoplay = true; v.playsInline = true; stage.appendChild(v); ext.hidden = false; ext.href = m.url;
+    } else {
+      const f = document.createElement('iframe'); f.src = m.url; f.allow = 'fullscreen; autoplay; gyroscope; accelerometer; xr-spatial-tracking'; f.allowFullscreen = true; f.title = key === 'tour' ? '360° virtual tour' : 'Animation';
+      stage.appendChild(f); ext.hidden = false; ext.href = m.url;
+    }
+    pop.hidden = false; requestAnimationFrame(() => pop.classList.add('show')); document.documentElement.style.overflow = 'hidden'; document.getElementById('popX').focus();
+  }
+  function closeMedia() { pop.classList.remove('show'); popT = setTimeout(() => { pop.hidden = true; stage.replaceChildren(); }, 300); document.documentElement.style.overflow = ''; popFrom && popFrom.focus(); }
+  pop.addEventListener('click', e => { if (e.target === pop) closeMedia(); });
+  document.querySelectorAll('[data-media]').forEach(b => b.addEventListener('click', () => openMedia(b.dataset.media)));
+  document.getElementById('popX').addEventListener('click', closeMedia);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) closeMedia(); });
+
+  // Email icon: opens the visitor's mail app; also copies the address in case no mail app is set up (common on desktop).
+  const mailLink = document.getElementById('mailLink'), copied = document.getElementById('copied');
+  mailLink.addEventListener('click', () => {
+    const addr = decodeURIComponent(mailLink.href.slice(7).split('?')[0]);
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(addr).then(() => {
+      copied.textContent = 'Email address copied'; copied.classList.add('on');
+      clearTimeout(copied._t); copied._t = setTimeout(() => copied.classList.remove('on'), 4000);
+    }).catch(() => {});
+  });
+  const form = document.getElementById('contactForm'), status = document.getElementById('formStatus');
+  // Brief form → Google Apps Script web app (writes to the studio's Google Sheet and emails a notification).
+  // Paste the web app URL (ends in /exec) below. Empty = preview mode, nothing is sent.
+  const FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwzaQWUTW3yl3NLq75BxMTSadldWAsu3SuTxKSVL14poUB-nbLGdn6W1GBa1P7XoJvA/exec';
+  const opened = Date.now();
+  const btn = form.querySelector('.send button'), btnText = btn.textContent;
+  const v = id => document.getElementById(id).value.trim();
+  const fail = 'Something went wrong. Please try again, or reach us on <a href="https://wa.me/6281391654607" target="_blank" rel="noopener">WhatsApp</a>.';
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!form.checkValidity()) { status.textContent = 'Please fill in your name, email and the project details.'; form.querySelector(':invalid').focus(); return; }
+    if (!FORM_ENDPOINT) { status.textContent = 'Preview only: this form is not connected yet, so nothing was sent.'; return; }
+    const data = {
+      name: v('f-name'), company: v('f-company'), email: v('f-email'), message: v('f-msg'),
+      services: [...form.querySelectorAll('.chips input:checked')].map(i => i.value),
+      website: v('f-web'), elapsed: Date.now() - opened, page: location.href
+    };
+    btn.disabled = true; btn.textContent = 'Sending…'; status.textContent = '';
+    try {
+      // A plain-text body keeps this a "simple" request, so the browser sends no CORS preflight.
+      const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: JSON.stringify(data) });
+      const out = await res.json();
+      if (!out.ok) throw new Error(out.error || 'rejected');
+      form.reset();
+      status.textContent = 'Thank you. Your brief has been sent, and we will be in touch soon.';
+    } catch (err) {
+      status.innerHTML = fail;
+    } finally {
+      btn.disabled = false; btn.textContent = btnText;
+    }
+  });
+})();
+</script>
+</body>
+</html>
